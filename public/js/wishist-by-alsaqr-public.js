@@ -1,6 +1,5 @@
 (function( $ ) {
 	'use strict';
-
 	/**
 	 * All of the code for your public-facing JavaScript source
 	 * should reside in this file.
@@ -28,5 +27,43 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+
+	
+	$(function(){
+		// var wpUrl = theme.wp_url;
+		
+		$('.favform').submit(function(e){
+			e.preventDefault();
+			$.ajax({
+				url: alsaqr.ajax_url, // Since WP 2.8 ajaxurl is always defined and points to admin-ajax.php
+				type: "POST",
+				data: {
+					'action': 'add_to_wishlist', // This is our PHP function below
+					'data': $(this).serialize(),
+					'security' : theme.security,
+				},
+				// beforeSend: function() {
+				// 	$("#loader").addClass('active-loading');
+				// },
+				success:function(data){
+
+				
+					$(this).find('.favourite-btn').toggleClass('fav-prodcut');
+					console.log(data);
+				
+				},
+				error: function(errorThrown){
+					console.log(errorThrown);
+				}
+			});
+		})
+
+
+
+		// 
+
+		
+		// 
+	})
 
 })( jQuery );

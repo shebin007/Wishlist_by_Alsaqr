@@ -215,4 +215,7 @@ class Wishist_By_Alsaqr {
 		return $this->version;
 	}
 
+
+
+
 }
