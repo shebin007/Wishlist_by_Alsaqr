@@ -118,9 +118,9 @@ function favoriteProduct($attr){
 		}
 	}
 	// if($args != null){
-			return '<form method="POST" class="favform">
-						<input type="hidden" name="prid" value="'.$id.'" />
-						<button type="submit" class="favourite-btn '.$activeClass.' ">
+			return '<form method="POST" class="favform " >
+						<input type="hidden" class="prid" name="prid" value="'.$id.'" />
+						<button type="submit" class="favourite-btn '.$activeClass.' prid-'.$id.' ">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="20.524" viewBox="0 0 24 20.524">
 								<path id="Path_2474" data-name="Path 2474" d="M-12-12.052v-.272a6.7,6.7,0,0,1,5.6-6.609A6.736,6.736,0,0,1-.562-17.062L0-16.5l.52-.562A6.819,6.819,0,0,1,6.4-18.933,6.7,6.7,0,0,1,12-12.323v.272A7.012,7.012,0,0,1,9.769-6.919L1.3.989A1.9,1.9,0,0,1,0,1.5,1.9,1.9,0,0,1-1.3.989L-9.769-6.919A7.019,7.019,0,0,1-12-12.052Z" transform="translate(12 19.024)" fill="#6ECDE5"/>
 							</svg>
@@ -230,3 +230,61 @@ function encode_arr($data) {
 function decode_arr($data) {
     return unserialize(base64_decode($data));
 }
+
+
+
+
+// short code for displaying products
+
+function favoriteProductdisplay($attr){
+	
+	global $wpdb;
+	$table_name = $wpdb->prefix . "wishlist_alsaqr";
+	$usid = get_current_user_id();
+	$wishlist_items = $wpdb->get_results (
+		"SELECT * 
+		FROM  $table_name 
+		WHERE user_id =  $usid ");
+	if(!is_admin()){
+		foreach($wishlist_items as $item){
+		
+			$query = new WP_Query( array(
+				'post_type'      => 'product',
+				'p' => $item->product_id,
+			) );
+			if($query->have_posts()){
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					do_action( 'woocommerce_shop_loop' );
+	
+					wc_get_template_part( 'content', 'product' );
+				}
+			}
+		}
+	}
+
+	
+
+}
+ 
+add_shortcode( 'alsaqr_favproducts' , 'favoriteProductdisplay' );
+
+
+
+function favoriteRemoveProduct($attr){
+	global $wpdb;
+	$id = ($attr['id']!='' ? $attr['id'] : '0') ; 
+	// if($args != null){
+			return '<form method="POST" class="removeform" >
+						<input type="hidden" class="prid" name="prid" value="'.$id.'" />
+						<button type="submit" class="favourite-rm-btn">
+							Remove
+						</button>
+					</form>
+					
+				';
+	// }
+ 
+}
+ 
+add_shortcode( 'favproduct_remove_btn' , 'favoriteRemoveProduct' );
