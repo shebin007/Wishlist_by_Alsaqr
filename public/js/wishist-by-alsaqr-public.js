@@ -32,7 +32,7 @@
 	
 	$(function(){
 		// var wpUrl = theme.wp_url;
-		wishlistListner();
+		// wishlistListner();
 		
 		$('.removeform').submit(function(e){
 			// var ob  = $(this);
@@ -61,11 +61,30 @@
 		})
 
 
-
-		// 
-
-		
-		// 
+		$('.cartFavform').submit(function(e){
+			e.preventDefault();
+			$.ajax({
+				url: alsaqr.ajax_url, // Since WP 2.8 ajaxurl is always defined and points to admin-ajax.php
+				type: "POST",
+				data: {
+					'action': 'add_to_wishlist', // This is our PHP function below
+					'data': $(this).serialize(),
+					'security' : theme.security,
+				},
+				// beforeSend: function() {
+				// 	$("#loader").addClass('active-loading');
+				// },
+				success:function(data){
+				
+					window.location.href = window.location.href; 					
+					
+				
+				},
+				error: function(errorThrown){
+					console.log(errorThrown);
+				}
+			});
+		})
 	})
 
 
@@ -79,6 +98,7 @@
 function wishlistListner(){
 	jQuery('.favform').submit(function(e){
 		var ob  = jQuery(this);
+		console.log(jQuery(this).serialize());
 		e.preventDefault();
 		jQuery.ajax({
 			url: alsaqr.ajax_url, // Since WP 2.8 ajaxurl is always defined and points to admin-ajax.php
@@ -88,24 +108,20 @@ function wishlistListner(){
 				'data': jQuery(this).serialize(),
 				'security' : theme.security,
 			},
-			// beforeSend: function() {
-			// 	jQuery("#loader").addClass('active-loading');
-			// },
-			success:function(data){
-				var obclass = jQuery(ob).find('.prid').val();
-				if (jQuery('.wishlist-containr' ).length > 0){
-					location.reload();
-				} else {
-					
-					jQuery('.prid-'+obclass ).toggleClass('fav-prodcut');
-				}
-				
-				
+		})
+		.done(function(data){
 			
-			},
-			error: function(errorThrown){
-				console.log(errorThrown);
+			var obclass = jQuery(ob).find('.prid').val();
+		
+			if (jQuery('.wishlist-containr' ).length > 0){
+				location.reload();
+			} else {
+				
+				jQuery('.prid-'+ obclass ).toggleClass('fav-prodcut');
 			}
+		})
+		.fail(function (jqXHR, textStatus, errorThrown) { 
+			console.log(errorThrown);
 		});
 	})
 

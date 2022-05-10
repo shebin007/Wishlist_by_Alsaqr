@@ -39,7 +39,7 @@ class Wishist_By_Alsaqr_Activator {
 		 
 			$sql = "CREATE TABLE IF NOT EXISTS $table_name (
 			  id bigint(20) NOT NULL AUTO_INCREMENT,
-			  user_id bigint(20) UNSIGNED NOT NULL,
+			  user_id VARCHAR(200)  NOT NULL,
 			  product_id bigint(20) UNSIGNED NOT NULL,
 			  PRIMARY KEY id (id)
 			) $charset_collate;";
