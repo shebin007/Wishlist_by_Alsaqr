@@ -156,13 +156,14 @@ add_action('wp_ajax_add_to_wishlist', 'add_to_wishlist');
 
 
 function add_to_wishlist(){
+	
+	check_ajax_referer('alsaqr_wishlist', 'security');
 	global $wpdb;
-	// check_ajax_referer('alsaqr_wishlist', 'security');
 	$cookiedata = [];
 	$table_name = $wpdb->prefix . "wishlist_alsaqr";
 	parse_str($_POST['data'] , $data );
-	$pid = $data['prid'];
-	if(is_user_logged_in()){
+	$pid = sanitize_text_field($data['prid']);
+	if(is_user_logged_in() && is_numeric($pid)){
 		$usid = get_current_user_id();
 		
 		$result1 = $wpdb->get_results (

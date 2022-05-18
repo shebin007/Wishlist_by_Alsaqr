@@ -43,7 +43,7 @@
 				data: {
 					'action': 'add_to_wishlist', // This is our PHP function below
 					'data': $(this).serialize(),
-					'security' : theme.security,
+					'security' : alsaqr.security,
 				},
 				// beforeSend: function() {
 				// 	$("#loader").addClass('active-loading');
@@ -69,7 +69,7 @@
 				data: {
 					'action': 'add_to_wishlist', // This is our PHP function below
 					'data': $(this).serialize(),
-					'security' : theme.security,
+					'security' : alsaqr.security,
 				},
 				// beforeSend: function() {
 				// 	$("#loader").addClass('active-loading');
@@ -106,7 +106,7 @@ function wishlistListner(){
 			data: {
 				'action': 'add_to_wishlist', // This is our PHP function below
 				'data': jQuery(this).serialize(),
-				'security' : theme.security,
+				'security' : alsaqr.security,
 			},
 		})
 		.done(function(data){
